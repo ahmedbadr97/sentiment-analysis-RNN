@@ -1,0 +1,9 @@
+*.ipynb_checkpoints
+*__pycache__/
+.idea/
+Skip_gram_2.ipynb
+Negative_Sampling_Solution.ipynb
+Negative_Sampling_Exercise.ipynb
+Skip_Grams_Exercise.ipynb
+Skip_Grams_Solution.ipynb
+dataset
