@@ -4,6 +4,8 @@ from .models import SkipGram
 from .dataloader import Word2VecDataset
 from .utils import cosine_similarity
 from .models import NegativeSamplingLoss
+import traintracker
+from traintracker import TrackerMod
 
 
 def train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, device='cpu', **kwargs):
@@ -20,7 +22,17 @@ def train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, device='cpu'
     steps = 0
     # every 10%
     print_every = int(len(skip_gram_data) * 0.1)
+    # (n_train_batches, train_batch_size)
+    train_data_size = skip_gram_data.no_batches, skip_gram_data.batch_size
+    hyperparameters = {"batch size": skip_gram_data.batch_size, "optimizer": optimizer,
+                       "embedding_size": model.embedding_size, "window_size": skip_gram_data.window_size,
+                       "no noise samples": skip_gram_data.no_noise_outputs}
+    train_tracker = traintracker.TrainTracker(model=model, tracker_mod=TrackerMod.TRAIN_ONLY,
+                                              train_data_size=train_data_size,
+                                              train_data_dir=kwargs['train_data_dir'], hyperparameters=hyperparameters,
+                                              weights_dir=kwargs['weights_dir'])
     for e in range(epochs):
+        train_tracker.train()
 
         # get our input, target batches
         for input_words, target_words, noise_words in skip_gram_data:
@@ -38,6 +50,7 @@ def train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, device='cpu'
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            train_tracker.step(loss.item())
 
             # loss stats
             if steps % print_every == 0:
@@ -51,3 +64,4 @@ def train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, device='cpu'
                     closest_words = [skip_gram_data.int2word[idx.item()] for idx in closest_idxs[ii]][1:]
                     print(skip_gram_data.int2word[valid_idx.item()] + " | " + ', '.join(closest_words))
                 print("...\n")
+        train_tracker.end_epoch()
