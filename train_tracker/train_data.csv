@@ -11,3 +11,15 @@ Parameter Group 0
     maximize: False
     weight_decay: 0
 )",16,5,5,"['model architecture', 'batch size', 'optimizer', 'embedding_size', 'window_size', 'no noise samples']"
+1,"SkipGram(
+  (input_embedding): Embedding(46344, 256)
+  (output_embedding): Embedding(46344, 256)
+)",128,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.003
+    maximize: False
+    weight_decay: 0
+)",256,5,25,"['model architecture', 'batch size', 'optimizer', 'embedding_size', 'no noise samples']"

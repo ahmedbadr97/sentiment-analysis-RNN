@@ -5,7 +5,7 @@ from torch.utils.data.dataloader import Dataset
 
 from collections import Counter
 import torch
-
+import time
 
 class Word2VecDataset(Dataset):
     def __init__(self, txt: str, batch_size, window_size=5, no_noise_outputs=25):
@@ -45,7 +45,9 @@ class Word2VecDataset(Dataset):
         for batch_idx in range(self.no_batches):
 
             batch_x, batch_y, batch_noise = [], [], []
+
             for _ in range(self.batch_size):
+
                 word_idx = next(word_idx_iter)
 
                 int_word = self.int_txt[word_idx]
@@ -62,17 +64,19 @@ class Word2VecDataset(Dataset):
                 # extend input vector to be like input
                 x = [int_word for _ in range(len(y))]
 
+
                 # torch.multinomial takes array of probability  of selecting each index the array and no of samples (indices)
                 # you want to take which is the indices of the selected words
-                noise_output = torch.multinomial(self.noise_distribution, len(y) * self.no_noise_outputs).view(len(y),
+                noise_output = torch.multinomial(self.noise_distribution, len(y) * self.no_noise_outputs,replacement=True).view(len(y),
                                                                                                                self.no_noise_outputs).tolist()
+
 
                 batch_x.extend(x)
                 batch_y.extend(y)
                 batch_noise.extend(noise_output)
 
-            # noise output
 
+            # noise output
             # noise_dist_target = {}
 
             # first set the portability of selecting the right output to be 0
