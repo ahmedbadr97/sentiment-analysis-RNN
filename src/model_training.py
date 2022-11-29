@@ -112,9 +112,9 @@ def sentiment_model_train(model: SentimentAnalysis, epochs, train_data: Sentimen
                                               weights_dir=kwargs['weights_dir'])
     train_losses, valid_losses = [], []
     print("Testing before training")
-    test_tracker=traintracker.TrainTracker(model,tracker_mod=TrackerMod.TEST_ONLY,test_data_size=test_data_size)
-    # test_loss=sentiment_model_test(model,test_data,criterion,test_tracker)
-    # print(f"Test Loss :{round(test_loss,3)}")
+    test_tracker = traintracker.TrainTracker(model, tracker_mod=TrackerMod.TEST_ONLY, test_data_size=test_data_size)
+    test_loss = sentiment_model_test(model, test_data, criterion, test_tracker, device=device)
+    print(f"Test Loss :{round(test_loss, 3)}")
 
     for e in range(epochs):
         model.train()
@@ -141,4 +141,3 @@ def sentiment_model_train(model: SentimentAnalysis, epochs, train_data: Sentimen
         valid_loss = sentiment_model_test(model, test_data=test_data, criterion=criterion,
                                           train_tracker=train_tracker, device=device)
         valid_losses.append(valid_loss)
-

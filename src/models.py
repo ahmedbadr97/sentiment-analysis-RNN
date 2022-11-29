@@ -50,9 +50,10 @@ class NegativeSamplingLoss(nn.Module):
 
 
 class SentimentAnalysis(nn.Module):
-    def __init__(self, word2int: dict, embedding_dim=256, hidden_nodes=256, n_layers=2, embedding_layer=None):
+    def __init__(self, word2int: dict, embedding_dim=256, hidden_nodes=256, n_layers=2, embedding_layer=None,
+                 dropout_prop=0.5):
         super().__init__()
-        dropout_prop = 0.3
+
         self.word2int = word2int
         self.n_layers = n_layers
         self.hidden_nodes = hidden_nodes
