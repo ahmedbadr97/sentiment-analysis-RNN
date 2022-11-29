@@ -1,14 +1,17 @@
+import os
 import random
 
 import numpy as np
-from torch.utils.data.dataloader import Dataset
 
 from collections import Counter
 import torch
-import time
+import json
 
-class Word2VecDataset(Dataset):
-    def __init__(self, txt: str, batch_size, window_size=5, no_noise_outputs=25):
+
+class Word2VecDataset:
+
+    def __init__(self, txt: str, batch_size, window_size=5, no_noise_outputs=25, word2int: dict = None):
+
         self.window_size = window_size
         self.no_noise_outputs = no_noise_outputs
         self.batch_size = batch_size
@@ -21,12 +24,18 @@ class Word2VecDataset(Dataset):
         words_list = sorted(self.words_counter, key=self.words_counter.get, reverse=True)
         # setting its freq to zero again to not select it in frequency distribution while choosing noise words
         self.words_counter['*'] = 0
-        # adding zero word which is left as reserve word with no meaning (padding word)
-        self.word2int = {}
-        self.int2word = {}
-        for idx, word in enumerate(words_list):
-            self.word2int[word] = idx
-            self.int2word[idx] = word
+
+        if word2int is None:
+            self.word2int = {}
+            self.int2word = {}
+            for idx, word in enumerate(words_list):
+                self.word2int[word] = idx
+                self.int2word[idx] = word
+        else:
+            self.word2int = word2int
+            for word, int_value in word2int.items():
+                self.int2word[int_value] = word
+
         self.no_unique_words = len(words_list)
 
         self.int_txt = [self.word2int[word] for word in txt.split()]
@@ -47,7 +56,6 @@ class Word2VecDataset(Dataset):
             batch_x, batch_y, batch_noise = [], [], []
 
             for _ in range(self.batch_size):
-
                 word_idx = next(word_idx_iter)
 
                 int_word = self.int_txt[word_idx]
@@ -64,17 +72,15 @@ class Word2VecDataset(Dataset):
                 # extend input vector to be like input
                 x = [int_word for _ in range(len(y))]
 
-
                 # torch.multinomial takes array of probability  of selecting each index the array and no of samples (indices)
                 # you want to take which is the indices of the selected words
-                noise_output = torch.multinomial(self.noise_distribution, len(y) * self.no_noise_outputs,replacement=True).view(len(y),
-                                                                                                               self.no_noise_outputs).tolist()
-
+                noise_output = torch.multinomial(self.noise_distribution, len(y) * self.no_noise_outputs,
+                                                 replacement=True).view(len(y),
+                                                                        self.no_noise_outputs).tolist()
 
                 batch_x.extend(x)
                 batch_y.extend(y)
                 batch_noise.extend(noise_output)
-
 
             # noise output
             # noise_dist_target = {}
@@ -90,6 +96,70 @@ class Word2VecDataset(Dataset):
 
             yield torch.tensor(batch_x, dtype=torch.long), torch.tensor(batch_y, dtype=torch.long), torch.tensor(
                 batch_noise)
+
+    def __len__(self):
+        return self.no_batches
+
+    def save_word2int(self, path):
+        with open(os.path.join(path, "word2int.json"), 'w') as json_file:
+            json_obj = json.dumps(self.word2int)
+            json_file.write(json_obj)
+
+
+class SentimentAnalysisDataset:
+    def __init__(self, reviews_txt: str, labels_txt, word2int: dict, batch_size, def_review_len=800):
+
+        self.word2int = word2int
+        self.int2word = {}
+        self.review_len = def_review_len
+        self.batch_size = batch_size
+        for word, int_value in word2int.items():
+            self.int2word[int_value] = word
+
+        txt_reviews_list = reviews_txt.split('\n')
+        self.int_rev_list = []
+        self.no_batches = len(txt_reviews_list) // batch_size
+
+        for review in txt_reviews_list:
+            new_review = [0 for _ in range(def_review_len)]
+            review_words = review.split()
+            int_review = []
+            # change review from words to int
+            for word in review_words:
+                if word in self.word2int:
+                    int_review.append(self.word2int[word])
+            """
+            we have the new_words array of zeros with the fixed review length that me made
+            the goal is to trim the reviews that have words more than the fixed length and left pad the reviews that 
+            have lesser length
+            """
+            curr_rev_len = min(len(int_review), def_review_len)
+            rev_idx = curr_rev_len - 1
+            new_rev_idx = def_review_len - 1
+            for _ in range(curr_rev_len):
+                new_review[new_rev_idx] = int_review[rev_idx]
+                new_rev_idx -= 1
+                rev_idx -= 1
+            self.int_rev_list.append(new_review)
+        self.labels_list = []
+        for label in labels_txt.split('\n')[:-1]:
+            if label == 'positive':
+                self.labels_list.append(1)
+            else:
+                self.labels_list.append(0)
+
+    def __iter__(self):
+        random_indices = [i for i in range(len(self.int_rev_list))]
+        random.shuffle(random_indices)
+        idx_iter = iter(random_indices)
+        for _ in range(self.no_batches):
+            batch_x = []
+            batch_y = []
+            for i in range(self.batch_size):
+                idx = next(idx_iter)
+                batch_x.append(self.int_rev_list[idx])
+                batch_y.append(self.labels_list[idx])
+            yield torch.tensor(batch_x, dtype=torch.long), torch.tensor(batch_y, dtype=torch.int)
 
     def __len__(self):
         return self.no_batches
