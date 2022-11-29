@@ -66,3 +66,54 @@ def remove_noise(txt: str, filtering_ratio, prob_threshold=0.5, min_freq=2):
 
     # till -1 to drop last empty line after the last \n
     return "".join(new_txt[:-1]), list(noisy_words)
+
+
+def remove_common_words(reviews: str, labels: str, threshold: float, min_freq: int):
+    """
+    remove common words that appear in both positive reviews and negative reviews, so it doesn't have weight for deciding
+    whether this review is positive or negative
+    :param reviews: reviews txt line separated
+    :param labels: labels txt line separated
+    :param threshold: threshold of removing common word from 0.0 to 4.0
+    :param min_freq: minimum frequency for the word to keep
+    :return: (clean_reviews_txt,pos_negative_ratio_dict,removed words)
+    """
+
+    reviews_list = reviews.split('\n')[:-1]
+    labels_list = labels.split('\n')[:-1]
+    positive_words_cnt = Counter()
+    negative_words_cnt = Counter()
+    all_words_cnt = Counter()
+
+    # calculate word importance
+    for i in range(len(reviews_list)):
+        words = reviews_list[i].split(" ")
+        for word in words:
+            if labels_list[i] == 'positive':
+                positive_words_cnt[word] += 1
+            else:
+                negative_words_cnt[word] += 1
+            all_words_cnt[word] += 1
+    # %%
+    words_pos_neg_ratio = Counter()
+    for word, cnt in all_words_cnt.items():
+        words_pos_neg_ratio[word] = np.log((positive_words_cnt[word] + 1) / (negative_words_cnt[word] + 1))
+
+    # remove non-important words
+
+    new_txt = []
+    noisy_words=set()
+    for review in reviews_list:
+        word_split_txt = review.split()
+
+        for word in word_split_txt:
+            if abs(words_pos_neg_ratio[word]) > threshold and all_words_cnt[word] >= min_freq:
+                new_txt.append(word)
+                new_txt.append(" ")
+            else:
+                noisy_words.add(word)
+        new_txt.append('\n')
+
+    return "".join(new_txt),words_pos_neg_ratio,list(noisy_words)
+
+

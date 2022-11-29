@@ -1,14 +1,15 @@
-from torch import optim
+import torch.nn
+from torch import optim, nn
 
 from .models import SkipGram
-from .dataloader import Word2VecDataset
+from .dataloader import Word2VecDataset, SentimentAnalysisDataset
 from .utils import cosine_similarity
-from .models import NegativeSamplingLoss
+from .models import NegativeSamplingLoss, SentimentAnalysis
 import traintracker
 from traintracker import TrackerMod
 
 
-def train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, device='cpu', **kwargs):
+def skipgram_train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, device='cpu', **kwargs):
     if 'optimizer' not in kwargs:
         optimizer = optim.Adam(model.parameters(), lr=0.003)
     else:
@@ -65,3 +66,79 @@ def train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, device='cpu'
                     print(skip_gram_data.int2word[valid_idx.item()] + " | " + ', '.join(closest_words))
                 print("...\n")
         train_tracker.end_epoch()
+
+
+def sentiment_model_test(model: SentimentAnalysis, test_data: SentimentAnalysisDataset,
+                         criterion, train_tracker: traintracker.TrainTracker, device='cpu'):
+    model.eval()
+    train_tracker.valid()
+    hidden = None
+    with torch.no_grad():
+        for review_batch, output_batch in test_data:
+            review_batch, output_batch = review_batch.to(device), output_batch.to(device)
+
+            predicted_output, hidden = model(review_batch, hidden)
+            loss = criterion(predicted_output, output_batch)
+            train_tracker.step(loss.item())
+        return train_tracker.end_epoch()
+
+
+def sentiment_model_train(model: SentimentAnalysis, epochs, train_data: SentimentAnalysisDataset,
+                          test_data: SentimentAnalysisDataset, device='cpu', **kwargs):
+    if 'optimizer' not in kwargs:
+        optimizer = optim.Adam(model.parameters(), lr=0.001)
+    else:
+        optimizer = kwargs['optimizer']
+    if 'criterion' not in kwargs:
+        criterion = torch.nn.BCELoss()
+    else:
+        criterion = kwargs['criterion']
+
+    if 'grad_clip' not in kwargs:
+        grad_clip = 5
+    else:
+        grad_clip = kwargs['grad_clip']
+
+    hyperparameters = {"batch_size": train_data.batch_size, "optimizer": optimizer,
+                       "review length": train_data.review_len, "grad clip": grad_clip}
+    if "notes" in kwargs:
+        hyperparameters['notes'] = kwargs['notes']
+
+    train_data_size = train_data.no_batches, train_data.batch_size
+    test_data_size = test_data.no_batches, test_data.batch_size
+    train_tracker = traintracker.TrainTracker(model=model, tracker_mod=TrackerMod.TRAIN_TEST,
+                                              train_data_size=train_data_size, test_data_size=test_data_size,
+                                              train_data_dir=kwargs['train_data_dir'], hyperparameters=hyperparameters,
+                                              weights_dir=kwargs['weights_dir'])
+    train_losses, valid_losses = [], []
+    print("Testing before training")
+    test_tracker=traintracker.TrainTracker(model,tracker_mod=TrackerMod.TEST_ONLY,test_data_size=test_data_size)
+    # test_loss=sentiment_model_test(model,test_data,criterion,test_tracker)
+    # print(f"Test Loss :{round(test_loss,3)}")
+
+    for e in range(epochs):
+        model.train()
+        train_tracker.train()
+        hidden = None
+        for review_batch, output_batch in train_data:
+            review_batch, output_batch = review_batch.to(device), output_batch.to(device)
+
+            predicted_output, hidden = model(review_batch, hidden)
+            loss = criterion(predicted_output, output_batch)
+
+            loss.backward()
+
+            nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
+            optimizer.step()
+
+            train_tracker.step(loss.item())
+
+            optimizer.zero_grad()
+            hidden = tuple(h.data for h in hidden)
+        epoch_loss = train_tracker.end_epoch()
+        train_losses.append(epoch_loss)
+
+        valid_loss = sentiment_model_test(model, test_data=test_data, criterion=criterion,
+                                          train_tracker=train_tracker, device=device)
+        valid_losses.append(valid_loss)
+

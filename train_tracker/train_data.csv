@@ -1,8 +1,8 @@
 epoch idx from,model architecture,batch size,optimizer,embedding_size,window_size,no noise samples,changed hyperParameters
 1,"SkipGram(
-  (input_embedding): Embedding(46344, 16)
-  (output_embedding): Embedding(46344, 16)
-)",24,"Adam (
+  (input_embedding): Embedding(4390, 128)
+  (output_embedding): Embedding(4390, 128)
+)",32,"Adam (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.999)
@@ -10,11 +10,11 @@ Parameter Group 0
     lr: 0.003
     maximize: False
     weight_decay: 0
-)",16,5,5,"['model architecture', 'batch size', 'optimizer', 'embedding_size', 'window_size', 'no noise samples']"
-1,"SkipGram(
-  (input_embedding): Embedding(46344, 256)
-  (output_embedding): Embedding(46344, 256)
-)",128,"Adam (
+)",128,5,5,"['model architecture', 'batch size', 'optimizer', 'embedding_size', 'window_size', 'no noise samples']"
+5,"SkipGram(
+  (input_embedding): Embedding(4390, 32)
+  (output_embedding): Embedding(4390, 32)
+)",32,"Adam (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.999)
@@ -22,4 +22,4 @@ Parameter Group 0
     lr: 0.003
     maximize: False
     weight_decay: 0
-)",256,5,25,"['model architecture', 'batch size', 'optimizer', 'embedding_size', 'no noise samples']"
+)",32,5,5,"['model architecture', 'embedding_size']"

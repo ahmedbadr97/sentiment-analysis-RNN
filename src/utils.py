@@ -1,3 +1,4 @@
+import json
 import random
 
 import numpy as np
@@ -42,3 +43,20 @@ def cosine_similarity(embedding, valid_size=16, valid_window=100, device='cpu'):
     similarities = torch.mm(valid_vectors, embed_vectors.t()) / magnitudes
 
     return valid_examples, similarities
+
+
+def read_file(file_path):
+    with open(file_path, 'r') as file:
+        return file.read()
+
+
+def save_json(data: dict, file_path):
+    with open(file_path, 'w') as json_file:
+        json_obj = json.dumps(data)
+        json_file.write(json_obj)
+
+
+def load_json(file_path):
+    with open(file_path, "r") as file:
+        word2int = json.load(file)
+    return word2int

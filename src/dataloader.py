@@ -107,7 +107,7 @@ class Word2VecDataset:
 
 
 class SentimentAnalysisDataset:
-    def __init__(self, reviews_txt: str, labels_txt, word2int: dict, batch_size, def_review_len=800):
+    def __init__(self, reviews_list: str, labels_list, word2int: dict, batch_size, def_review_len=800):
 
         self.word2int = word2int
         self.int2word = {}
@@ -116,11 +116,10 @@ class SentimentAnalysisDataset:
         for word, int_value in word2int.items():
             self.int2word[int_value] = word
 
-        txt_reviews_list = reviews_txt.split('\n')
         self.int_rev_list = []
-        self.no_batches = len(txt_reviews_list) // batch_size
+        self.no_batches = len(reviews_list) // batch_size
 
-        for review in txt_reviews_list:
+        for review in reviews_list:
             new_review = [0 for _ in range(def_review_len)]
             review_words = review.split()
             int_review = []
@@ -142,7 +141,7 @@ class SentimentAnalysisDataset:
                 rev_idx -= 1
             self.int_rev_list.append(new_review)
         self.labels_list = []
-        for label in labels_txt.split('\n')[:-1]:
+        for label in labels_list:
             if label == 'positive':
                 self.labels_list.append(1)
             else:
@@ -159,7 +158,7 @@ class SentimentAnalysisDataset:
                 idx = next(idx_iter)
                 batch_x.append(self.int_rev_list[idx])
                 batch_y.append(self.labels_list[idx])
-            yield torch.tensor(batch_x, dtype=torch.long), torch.tensor(batch_y, dtype=torch.int)
+            yield torch.tensor(batch_x, dtype=torch.long), torch.tensor(batch_y, dtype=torch.float)
 
     def __len__(self):
         return self.no_batches
