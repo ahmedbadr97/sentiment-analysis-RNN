@@ -97,23 +97,22 @@ def remove_common_words(reviews: str, labels: str, threshold: float, min_freq: i
     # %%
     words_pos_neg_ratio = Counter()
     for word, cnt in all_words_cnt.items():
-        words_pos_neg_ratio[word] = np.log((positive_words_cnt[word] + 1) / (negative_words_cnt[word] + 1))
+        if cnt >= min_freq:
+            words_pos_neg_ratio[word] = np.log((positive_words_cnt[word] + 1) / (negative_words_cnt[word] + 1))
 
     # remove non-important words
 
     new_txt = []
-    noisy_words=set()
+    noisy_words = set()
     for review in reviews_list:
         word_split_txt = review.split()
 
         for word in word_split_txt:
-            if abs(words_pos_neg_ratio[word]) > threshold and all_words_cnt[word] >= min_freq:
+            if all_words_cnt[word] >= min_freq and abs(words_pos_neg_ratio[word]) >= threshold:
                 new_txt.append(word)
                 new_txt.append(" ")
             else:
                 noisy_words.add(word)
         new_txt.append('\n')
 
-    return "".join(new_txt),words_pos_neg_ratio,list(noisy_words)
-
-
+    return "".join(new_txt), words_pos_neg_ratio, list(noisy_words)
