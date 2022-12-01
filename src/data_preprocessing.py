@@ -4,10 +4,17 @@ from collections import Counter
 import numpy as np
 
 
+# r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
 def remove_punctuations(txt):
     new_txt = []
+    punctuations = {'.', '?', '!', '#', '$', '%', '&', '(', ')', '*', ',', '+', '-', '/', ':', ';', '<', '=', '>',
+                    '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'}
+    punctuation_map = {}
+    for p in punctuations:
+        punctuation_map[p] = f" {p} "
     for char in txt:
-        if char not in punctuation:
+
+        if char not in punctuations:
             if char == '\n':
                 char = ' \n '
             new_txt.append(char)

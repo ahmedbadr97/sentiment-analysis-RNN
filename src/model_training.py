@@ -73,14 +73,16 @@ def sentiment_model_test(model: SentimentAnalysis, test_data: SentimentAnalysisD
     model.eval()
     train_tracker.valid()
     hidden = None
+    avg_test_loss = 0
     with torch.no_grad():
         for review_batch, output_batch in test_data:
             review_batch, output_batch = review_batch.to(device), output_batch.to(device)
 
             predicted_output, hidden = model(review_batch, hidden)
             loss = criterion(predicted_output, output_batch)
-            train_tracker.step(loss.item())
-        return train_tracker.end_epoch()
+            avg_test_loss =train_tracker.step(loss.item())
+
+    return avg_test_loss
 
 
 def sentiment_model_train(model: SentimentAnalysis, epochs, train_data: SentimentAnalysisDataset,
@@ -141,3 +143,4 @@ def sentiment_model_train(model: SentimentAnalysis, epochs, train_data: Sentimen
         valid_loss = sentiment_model_test(model, test_data=test_data, criterion=criterion,
                                           train_tracker=train_tracker, device=device)
         valid_losses.append(valid_loss)
+        train_tracker.end_epoch()

@@ -14,3 +14,18 @@ Parameter Group 0
     maximize: False
     weight_decay: 0
 )",800,5,testing,"['model architecture', 'batch_size', 'optimizer', 'review length', 'grad clip', 'notes']"
+1,"SentimentAnalysis(
+  (embedding_layer): Embedding(46344, 512)
+  (lstm): LSTM(512, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",64,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    eps: 1e-08
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)",500,5,testing,"['model architecture', 'batch_size', 'review length']"
