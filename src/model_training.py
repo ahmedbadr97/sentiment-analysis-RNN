@@ -80,7 +80,7 @@ def sentiment_model_test(model: SentimentAnalysis, test_data: SentimentAnalysisD
 
             predicted_output, hidden = model(review_batch, hidden)
             loss = criterion(predicted_output, output_batch)
-            avg_test_loss =train_tracker.step(loss.item())
+            avg_test_loss = train_tracker.step(loss.item())
 
     return avg_test_loss
 
@@ -137,10 +137,10 @@ def sentiment_model_train(model: SentimentAnalysis, epochs, train_data: Sentimen
 
             optimizer.zero_grad()
             hidden = tuple(h.data for h in hidden)
-        epoch_loss = train_tracker.end_epoch()
-        train_losses.append(epoch_loss)
 
         valid_loss = sentiment_model_test(model, test_data=test_data, criterion=criterion,
                                           train_tracker=train_tracker, device=device)
+
+        train_loss, valid_loss = train_tracker.end_epoch()
+        train_losses.append(train_loss)
         valid_losses.append(valid_loss)
-        train_tracker.end_epoch()
