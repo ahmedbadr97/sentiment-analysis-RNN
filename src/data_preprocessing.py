@@ -57,7 +57,7 @@ def remove_noise(txt: str, filtering_ratio, prob_threshold=0.5, min_freq=2):
     p_drop = {word: 1 - np.sqrt(1.0 / (word_weight[word] * filtering_ratio)) for word in word_counts}
 
     noisy_words = set()
-    lines = txt.split('\n')[:-1]
+    lines = txt.split('\n')
 
     new_txt = []
     for line in lines:
@@ -72,7 +72,7 @@ def remove_noise(txt: str, filtering_ratio, prob_threshold=0.5, min_freq=2):
         new_txt.append('\n')
 
     # till -1 to drop last empty line after the last \n
-    return "".join(new_txt[:-1]), list(noisy_words)
+    return "".join(new_txt[:-1]), list(noisy_words),p_drop
 
 
 def remove_common_words(reviews: str, labels: str, threshold: float, min_freq: int):
@@ -86,8 +86,8 @@ def remove_common_words(reviews: str, labels: str, threshold: float, min_freq: i
     :return: (clean_reviews_txt,pos_negative_ratio_dict,removed words)
     """
 
-    reviews_list = reviews.split('\n')[:-1]
-    labels_list = labels.split('\n')[:-1]
+    reviews_list = reviews.split('\n')
+    labels_list = labels.split('\n')
     positive_words_cnt = Counter()
     negative_words_cnt = Counter()
     all_words_cnt = Counter()

@@ -54,14 +54,18 @@ class Word2VecDataset:
         for batch_idx in range(self.no_batches):
 
             batch_x, batch_y, batch_noise = [], [], []
+            batch_noise_tensor = torch.multinomial(self.noise_distribution,
+                                                   self.batch_size * self.no_noise_outputs * self.window_size * 2,
+                                                   replacement=True).view(
+                self.batch_size, -1)
 
-            for _ in range(self.batch_size):
+            for i in range(self.batch_size):
                 word_idx = next(word_idx_iter)
 
                 int_word = self.int_txt[word_idx]
 
                 # max for avoiding negative indices
-                r_window_size = random.randint(1, self.window_size + 1)
+                r_window_size = random.randint(1, self.window_size)
                 start_idx = max(0, word_idx - r_window_size)
 
                 # min for avoiding out of bounds indices
@@ -74,9 +78,9 @@ class Word2VecDataset:
 
                 # torch.multinomial takes array of probability  of selecting each index the array and no of samples (indices)
                 # you want to take which is the indices of the selected words
-                noise_output = torch.multinomial(self.noise_distribution, len(y) * self.no_noise_outputs,
-                                                 replacement=True).view(len(y),
-                                                                        self.no_noise_outputs).tolist()
+
+                noise_output = batch_noise_tensor[i][:len(y) * self.no_noise_outputs].view(len(y),
+                                                                                           self.no_noise_outputs).tolist()
 
                 batch_x.extend(x)
                 batch_y.extend(y)
