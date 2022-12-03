@@ -3,12 +3,16 @@ from collections import Counter
 
 import numpy as np
 
-
 # r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
+# range(start, stop, step)
+
+from pandas import DataFrame
+
+
 def remove_punctuations(txt):
     new_txt = []
     punctuations = {'.', '?', '!', '#', '$', '%', '&', '(', ')', '*', ',', '+', '-', '/', ':', ';', '<', '=', '>',
-                    '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~','"'}
+                    '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"', "'"}
     punctuation_map = {}
     for p in punctuations:
         punctuation_map[p] = f" {p} "
@@ -17,9 +21,18 @@ def remove_punctuations(txt):
         if char not in punctuations:
             if char == '\n':
                 char = ' \n '
-            new_txt.append(char)
+            new_txt.append(char.lower())
 
     return "".join(new_txt)
+
+
+def get_head_mid_tail(df: DataFrame, n: int):
+    size = df.shape[0]
+    mid_idx = size // 2
+    indices = [i for i in range(n)] + [i for i in range(mid_idx - (n // 2), mid_idx + (n // 2))] + [i for i in
+                                                                                                    range(size - n,
+                                                                                                          size)]
+    return df.iloc[indices]
 
 
 def get_noise_words(reviews_txt, labels_txt, threshold):
@@ -72,7 +85,7 @@ def remove_noise(txt: str, filtering_ratio, prob_threshold=0.5, min_freq=2):
         new_txt.append('\n')
 
     # till -1 to drop last empty line after the last \n
-    return "".join(new_txt[:-1]), list(noisy_words),p_drop
+    return "".join(new_txt[:-1]), list(noisy_words), p_drop
 
 
 def remove_common_words(reviews: str, labels: str, threshold: float, min_freq: int):
