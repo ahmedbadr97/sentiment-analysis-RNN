@@ -98,3 +98,4 @@ class SentimentAnalysis(nn.Module):
         output = output[:, -1]
 
         return output, hidden
+
