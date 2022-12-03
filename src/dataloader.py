@@ -122,6 +122,7 @@ class SentimentAnalysisDataset:
 
         self.int_rev_list = []
         self.no_batches = len(reviews_list) // batch_size
+        rev_len_sum = 0.0
 
         for review in reviews_list:
             new_review = [0 for _ in range(def_review_len)]
@@ -143,7 +144,12 @@ class SentimentAnalysisDataset:
                 new_review[new_rev_idx] = int_review[rev_idx]
                 new_rev_idx -= 1
                 rev_idx -= 1
+
+            rev_len_sum += len(int_review)
             self.int_rev_list.append(new_review)
+
+        self.avg_rev_len = int(float(rev_len_sum) / len(self.int_rev_list))
+
         self.labels_list = []
         for label in labels_list:
             if label == 'positive':
