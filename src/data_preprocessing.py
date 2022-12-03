@@ -8,7 +8,7 @@ import numpy as np
 def remove_punctuations(txt):
     new_txt = []
     punctuations = {'.', '?', '!', '#', '$', '%', '&', '(', ')', '*', ',', '+', '-', '/', ':', ';', '<', '=', '>',
-                    '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'}
+                    '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~','"'}
     punctuation_map = {}
     for p in punctuations:
         punctuation_map[p] = f" {p} "
