@@ -46,18 +46,19 @@ class Word2VecDataset:
         self.no_batches = self.no_words // self.batch_size
 
     def __iter__(self):
-
+        # random.choice(a, size=None, replace=True, p=None)
         indices_distribution = [i for i in range(self.no_words)]
         random.shuffle(indices_distribution)
         word_idx_iter = iter(indices_distribution)
+        word_idx_list = np.arange(stop=self.no_unique_words)
 
         for batch_idx in range(self.no_batches):
 
             batch_x, batch_y, batch_noise = [], [], []
-            batch_noise_tensor = torch.multinomial(self.noise_distribution,
-                                                   self.batch_size * self.no_noise_outputs * self.window_size * 2,
-                                                   replacement=True).view(
-                self.batch_size, -1)
+
+            np_batch_noise = np.random.choice(word_idx_list,
+                                              size=(self.batch_size, self.no_noise_outputs, self.window_size * 2),
+                                              p=self.noise_distribution)
 
             for i in range(self.batch_size):
                 word_idx = next(word_idx_iter)
@@ -79,8 +80,7 @@ class Word2VecDataset:
                 # torch.multinomial takes array of probability  of selecting each index the array and no of samples (indices)
                 # you want to take which is the indices of the selected words
 
-                noise_output = batch_noise_tensor[i][:len(y) * self.no_noise_outputs].view(len(y),
-                                                                                           self.no_noise_outputs).tolist()
+                noise_output = np_batch_noise[i][:][:len(y)].tolist()
 
                 batch_x.extend(x)
                 batch_y.extend(y)
@@ -156,11 +156,12 @@ class SentimentAnalysisDataset:
                 self.labels_list.append(1)
             else:
                 self.labels_list.append(0)
+        self.rev_indices = [i for i in range(len(self.int_rev_list))]
 
     def __iter__(self):
-        random_indices = [i for i in range(len(self.int_rev_list))]
-        random.shuffle(random_indices)
-        idx_iter = iter(random_indices)
+
+        random.shuffle(self.rev_indices)
+        idx_iter = iter(self.rev_indices)
         for _ in range(self.no_batches):
             batch_x = []
             batch_y = []

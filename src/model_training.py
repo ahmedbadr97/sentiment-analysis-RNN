@@ -28,6 +28,8 @@ def skipgram_train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, dev
     hyperparameters = {"batch size": skip_gram_data.batch_size, "optimizer": optimizer,
                        "embedding_size": model.embedding_size, "window_size": skip_gram_data.window_size,
                        "no noise samples": skip_gram_data.no_noise_outputs}
+    if "notes" in kwargs:
+        hyperparameters['notes'] = kwargs['notes']
     train_tracker = traintracker.TrainTracker(model=model, tracker_mod=TrackerMod.TRAIN_ONLY,
                                               train_data_size=train_data_size,
                                               train_data_dir=kwargs['train_data_dir'], hyperparameters=hyperparameters,
