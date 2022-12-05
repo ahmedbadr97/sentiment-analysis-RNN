@@ -19,12 +19,14 @@ def skipgram_train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, dev
     else:
         criterion = kwargs['criterion']
 
-    # train for some number of epochs
+    # train tracker is a package that tracks the change of the hyperparameters during training and if it changed from
+    # the last saved one it saves the new hyperparameters and tracks the epoch  number of changing the hyperparmater
     steps = 0
     # every 10%
     print_every = int(len(skip_gram_data) * 0.1)
     # (n_train_batches, train_batch_size)
     train_data_size = skip_gram_data.no_batches, skip_gram_data.batch_size
+    # pass the hyperparameter you want to track to train tracker as dictionary
     hyperparameters = {"batch size": skip_gram_data.batch_size, "optimizer": optimizer,
                        "embedding_size": model.embedding_size, "window_size": skip_gram_data.window_size,
                        "no noise samples": skip_gram_data.no_noise_outputs}
@@ -53,6 +55,7 @@ def skipgram_train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, dev
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            # prints avg loss , time remaining
             train_tracker.step(loss.item())
 
             # loss stats
@@ -67,6 +70,7 @@ def skipgram_train(model: SkipGram, epochs, skip_gram_data: Word2VecDataset, dev
                     closest_words = [skip_gram_data.int2word[idx.item()] for idx in closest_idxs[ii]][1:]
                     print(skip_gram_data.int2word[valid_idx.item()] + " | " + ', '.join(closest_words))
                 print("...\n")
+        # prints time taken and the train and test loss and if the test loss decreased it saves the model weights
         train_tracker.end_epoch()
 
 

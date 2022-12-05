@@ -25,9 +25,10 @@ class Word2VecDataset:
         # setting its freq to zero again to not select it in frequency distribution while choosing noise words
         self.words_counter['*'] = 0
 
+        # save word2int and int2word dict
+        self.int2word = {}
         if word2int is None:
             self.word2int = {}
-            self.int2word = {}
             for idx, word in enumerate(words_list):
                 self.word2int[word] = idx
                 self.int2word[idx] = word
@@ -38,23 +39,27 @@ class Word2VecDataset:
 
         self.no_unique_words = len(words_list)
 
+        # save txt reviews as int , where each word has its own int value
         self.int_txt = [self.word2int[word] for word in txt.split()]
+
         # vector of vocab size each index will have the probability of selecting the word of this index
-        # we will use unigram distribution power 3/4
+        # we will use uni-gram distribution power 3/4
         freq_array = np.array([self.words_counter[word] for word in words_list], dtype=float)
         self.noise_distribution = torch.tensor((freq_array ** 0.75) / np.sum(freq_array ** 0.75))
         self.no_batches = self.no_words // self.batch_size
 
     def __iter__(self):
-        # random.choice(a, size=None, replace=True, p=None)
+        # walk on the txt randomly not word by word , first generate indices from 0 to the no of words in the txt
+        # then shuffle
         indices_distribution = [i for i in range(self.no_words)]
         random.shuffle(indices_distribution)
         word_idx_iter = iter(indices_distribution)
 
-
         for batch_idx in range(self.no_batches):
-
+            # create batch from input, target , noise words
             batch_x, batch_y, batch_noise = [], [], []
+            # get noise outputs for all inputs in the batch
+            # each input word will be repeated 2* window size each one of them needs n_noise output * batch_size
             batch_noise_tensor = torch.multinomial(self.noise_distribution,
                                                    self.batch_size * self.no_noise_outputs * self.window_size * 2,
                                                    replacement=True).view(
@@ -77,27 +82,13 @@ class Word2VecDataset:
                 # extend input vector to be like input
                 x = [int_word for _ in range(len(y))]
 
-                # torch.multinomial takes array of probability  of selecting each index the array and no of samples (indices)
-                # you want to take which is the indices of the selected words
-
+                # get the actual window size *2 because window size is randomly generated from 1 to window size
                 noise_output = batch_noise_tensor[i][:len(y) * self.no_noise_outputs].view(len(y),
                                                                                            self.no_noise_outputs).tolist()
 
                 batch_x.extend(x)
                 batch_y.extend(y)
                 batch_noise.extend(noise_output)
-
-            # noise output
-            # noise_dist_target = {}
-
-            # first set the portability of selecting the right output to be 0
-            # for word_int in y:
-            #     noise_dist_target[word_int] = self.noise_distribution[word_int]
-            #     self.noise_distribution[word_int] = 0.0
-
-            #  reset the portability of selecting the right output to be its value
-            # for word_int in y:
-            #     self.noise_distribution[word_int] = noise_dist_target[word_int]
 
             yield torch.tensor(batch_x, dtype=torch.long), torch.tensor(batch_y, dtype=torch.long), torch.tensor(
                 batch_noise)

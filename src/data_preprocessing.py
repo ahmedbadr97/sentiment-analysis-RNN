@@ -9,6 +9,11 @@ from pandas import DataFrame
 
 
 def remove_punctuations(txt):
+    """
+    remove punctuations and change all characters to lowercase
+    :param txt: reviews txt
+    :return: cleaned text preserving the newline character
+    """
     new_txt = []
     punctuations = {'.', '?', '!', '#', '$', '%', '&', '(', ')', '*', ',', '+', '-', '/', ':', ';', '<', '=', '>',
                     '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', '"', "'"}
@@ -25,7 +30,13 @@ def remove_punctuations(txt):
     return "".join(new_txt)
 
 
-def get_head_mid_tail(df: DataFrame, n: int):
+def get_head_mid_tail(df: DataFrame, n: int) -> DataFrame:
+    """
+    get n rows from top , n from mid and n from tail
+    :param df: sorted dataframe
+    :param n: no of rows to get
+    :return: 3*n rows dataframe from top,middle,bottom
+    """
     size = df.shape[0]
     mid_idx = size // 2
     indices = [i for i in range(n)] + [i for i in range(mid_idx - (n // 2), mid_idx + (n // 2))] + [i for i in
@@ -57,7 +68,18 @@ def get_noise_words(reviews_txt, labels_txt, threshold):
     return noisy_words
 
 
-def remove_noise(txt: str, filtering_ratio, prob_threshold=0.5, min_freq=2, min_rev_freq=None):
+def remove_noise(txt: str, prob_dist_threshold, min_prob_drop=0.5, min_freq=2, min_rev_freq=None):
+    """ remove high frequent words using uni-grams distribution for the words , remove less frequent words that has freq
+    less than min_freq and appear at least min_rev_freq in reviews
+
+    :param txt: reviews string line separated
+    :param prob_dist_threshold: probability distribution threshold
+    :param min_prob_drop: probability of drop that the word will be dropped if it is less than it
+    :param min_freq: minimum frequency for the word in the whole text
+    :param min_rev_freq: minimum frequency for the word usage in a review
+    :return: (preprocessed_txt,removed_words,probab
+    ility drop of each word)
+    """
     # we will split the txt to lines  to keep the \n
 
     # till -1 to drop last empty line after the last \n
@@ -67,7 +89,7 @@ def remove_noise(txt: str, filtering_ratio, prob_threshold=0.5, min_freq=2, min_
     word_rev_count = Counter()
 
     word_weight = {word: count / total_count for word, count in word_counts.items()}
-    p_drop = {word: 1 - np.sqrt(1.0 / (word_weight[word] * filtering_ratio)) for word in word_counts}
+    p_drop = {word: 1 - np.sqrt(1.0 / (word_weight[word] * prob_dist_threshold)) for word in word_counts}
 
     noisy_words = set()
     lines = txt.split('\n')
@@ -84,7 +106,7 @@ def remove_noise(txt: str, filtering_ratio, prob_threshold=0.5, min_freq=2, min_
         word_split_txt = line.split()
 
         for word in word_split_txt:
-            not_noise = p_drop[word] <= prob_threshold and word_counts[word] >= min_freq
+            not_noise = p_drop[word] <= min_prob_drop and word_counts[word] >= min_freq
             if min_rev_freq is not None:
                 not_noise &= word_rev_count[word] >= min_rev_freq
 

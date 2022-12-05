@@ -60,6 +60,7 @@ class SentimentAnalysis(nn.Module):
 
         self.embedding_layer = nn.Embedding(len(word2int),
                                             embedding_dim) if embedding_layer is None else embedding_layer
+
         self.lstm = nn.LSTM(input_size=embedding_dim, num_layers=n_layers, hidden_size=hidden_nodes,
                             dropout=dropout_prop, batch_first=True)
         self.dropout = nn.Dropout(dropout_prop)
@@ -98,4 +99,3 @@ class SentimentAnalysis(nn.Module):
         output = output[:, -1]
 
         return output, hidden
-
