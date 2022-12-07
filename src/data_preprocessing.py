@@ -4,7 +4,7 @@ import numpy as np
 
 # r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
 # range(start, stop, step)
-
+import re
 from pandas import DataFrame
 
 
@@ -28,6 +28,13 @@ def remove_punctuations(txt):
             new_txt.append(char.lower())
 
     return "".join(new_txt)
+
+
+def remove_html_tags(text):
+    """Remove html tags from a string"""
+
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
 
 
 def get_head_mid_tail(df: DataFrame, n: int) -> DataFrame:
