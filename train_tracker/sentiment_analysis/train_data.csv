@@ -1,31 +1,392 @@
 epoch idx from,model architecture,batch_size,optimizer,review length,grad clip,notes,changed hyperParameters
 1,"SentimentAnalysis(
-  (embedding_layer): Embedding(46344, 512)
-  (lstm): LSTM(512, 256, num_layers=2, batch_first=True, dropout=0.3)
-  (dropout): Dropout(p=0.3, inplace=False)
-  (fc): Linear(in_features=256, out_features=1, bias=True)
-  (sigmoid): Sigmoid()
-)",1,"Adam (
-Parameter Group 0
-    amsgrad: False
-    betas: (0.9, 0.999)
-    eps: 1e-08
-    lr: 0.001
-    maximize: False
-    weight_decay: 0
-)",800,5,testing,"['model architecture', 'batch_size', 'optimizer', 'review length', 'grad clip', 'notes']"
-1,"SentimentAnalysis(
-  (embedding_layer): Embedding(46344, 512)
-  (lstm): LSTM(512, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.5)
   (dropout): Dropout(p=0.5, inplace=False)
   (fc): Linear(in_features=256, out_features=1, bias=True)
   (sigmoid): Sigmoid()
-)",64,"Adam (
+)",256,"Adam (
 Parameter Group 0
     amsgrad: False
     betas: (0.9, 0.999)
+    capturable: False
     eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,"['model architecture', 'batch_size', 'optimizer', 'review length', 'grad clip', 'notes']"
+9,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 512, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=512, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+13,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 128, num_layers=3, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=128, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+19,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+27,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+28,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 128, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=128, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+33,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 64, num_layers=3, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=64, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+44,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 512, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=512, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+51,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 512, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=512, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,un freeze embbding layer,['notes']
+53,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 300, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=300, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,"['model architecture', 'notes']"
+61,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,['model architecture']
+86,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,un freeze embbding layer,['notes']
+99,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 1e-05
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.43 noise 20 window 4,"['optimizer', 'notes']"
+119,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.6)
+  (dropout): Dropout(p=0.6, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",1000,5,start with skip-gram 3.43 noise 20 window 4,"['model architecture', 'optimizer', 'review length']"
+139,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",300,5,start with skip-gram 3.43 noise 20 window 4,"['model architecture', 'review length']"
+142,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 300)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.6)
+  (dropout): Dropout(p=0.6, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",1500,5,start with skip-gram 3.43 noise 20 window 4,"['model architecture', 'review length']"
+148,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 400)
+  (lstm): LSTM(300, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",512,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.52 add weight decay noise 20 window 4,"['model architecture', 'batch_size', 'review length', 'notes']"
+148,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 400)
+  (lstm): LSTM(400, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",512,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 3.52 add weight decay noise 20 window 4,['model architecture']
+150,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 400)
+  (lstm): LSTM(400, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",512,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
     lr: 0.001
     maximize: False
     weight_decay: 0
-)",500,5,testing,"['model architecture', 'batch_size', 'review length']"
+)",500,5,start with skip-gram 3.52 add weight decay noise 20 window 4,['optimizer']
+153,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 400)
+  (lstm): LSTM(400, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",512,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)",500,5,un freeze embbding layer,['notes']
+156,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 256)
+  (lstm): LSTM(256, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",512,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)",500,5,start with skip-gram 2.84 noise 10 window 4,"['model architecture', 'notes']"
+176,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 256)
+  (lstm): LSTM(256, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",512,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)",500,5,un freeze embbding layer,['notes']
+177,"SentimentAnalysis(
+  (embedding_layer): Embedding(17944, 256)
+  (lstm): LSTM(256, 256, num_layers=2, batch_first=True, dropout=0.5)
+  (dropout): Dropout(p=0.5, inplace=False)
+  (fc): Linear(in_features=256, out_features=1, bias=True)
+  (sigmoid): Sigmoid()
+)",512,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",500,5,un freeze embbding layer,['optimizer']

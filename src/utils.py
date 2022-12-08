@@ -45,6 +45,17 @@ def cosine_similarity(embedding, valid_size=16, valid_window=100, device='cpu'):
     return valid_examples, similarities
 
 
+def closest_words(embedding, int2word, colsest_n=6):
+    valid_examples, valid_similarities = cosine_similarity(embedding)
+    _, closest_idxs = valid_similarities.topk(colsest_n)
+
+    valid_examples, closest_idxs = valid_examples.to('cpu'), closest_idxs.to('cpu')
+    for ii, valid_idx in enumerate(valid_examples):
+        closest_words = [int2word[idx.item()] for idx in closest_idxs[ii]][1:]
+        print(int2word[valid_idx.item()] + " | " + ', '.join(closest_words))
+    print("...\n")
+
+
 def read_file(file_path):
     with open(file_path, 'r') as file:
         return file.read()

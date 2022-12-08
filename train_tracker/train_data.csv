@@ -139,9 +139,9 @@ Parameter Group 0
     maximize: False
     weight_decay: 0
 )",300,5,25,['optimizer']
-68,"SkipGram(
-  (input_embedding): Embedding(38158, 300)
-  (output_embedding): Embedding(38158, 300)
+77,"SkipGram(
+  (input_embedding): Embedding(26949, 300)
+  (output_embedding): Embedding(26949, 300)
 )",256,"Adam (
 Parameter Group 0
     amsgrad: False
@@ -152,10 +152,24 @@ Parameter Group 0
     lr: 0.001
     maximize: False
     weight_decay: 0
-)",300,5,25,['batch size']
-68,"SkipGram(
-  (input_embedding): Embedding(38158, 300)
-  (output_embedding): Embedding(38158, 300)
+)",300,4,25,"['model architecture', 'batch size', 'window_size']"
+88,"SkipGram(
+  (input_embedding): Embedding(17944, 300)
+  (output_embedding): Embedding(17944, 300)
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)",300,5,25,"['model architecture', 'window_size']"
+107,"SkipGram(
+  (input_embedding): Embedding(17944, 300)
+  (output_embedding): Embedding(17944, 300)
 )",256,"Adam (
 Parameter Group 0
     amsgrad: False
@@ -167,3 +181,59 @@ Parameter Group 0
     maximize: False
     weight_decay: 0
 )",300,5,25,['optimizer']
+112,"SkipGram(
+  (input_embedding): Embedding(17944, 300)
+  (output_embedding): Embedding(17944, 300)
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",300,4,20,"['window_size', 'no noise samples']"
+114,"SkipGram(
+  (input_embedding): Embedding(17944, 300)
+  (output_embedding): Embedding(17944, 300)
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)",300,4,10,"['optimizer', 'no noise samples']"
+114,"SkipGram(
+  (input_embedding): Embedding(17944, 256)
+  (output_embedding): Embedding(17944, 256)
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)",256,4,10,"['model architecture', 'embedding_size']"
+128,"SkipGram(
+  (input_embedding): Embedding(17944, 256)
+  (output_embedding): Embedding(17944, 256)
+)",256,"Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    lr: 0.0001
+    maximize: False
+    weight_decay: 0
+)",256,4,10,['optimizer']
