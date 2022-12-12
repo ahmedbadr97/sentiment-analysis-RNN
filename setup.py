@@ -1,6 +1,5 @@
 import setuptools
 
-
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 setuptools.setup(
@@ -14,8 +13,8 @@ setuptools.setup(
     include_package_data=True,
     url='https://github.com/ahmedbadr97/sentiment-analysis-RNN',
     license='MIT',
-    packages=['sentiment-analysis'],
+    packages=['sentiment_analysis'],
     package_dir={
         'sentiment_analysis': 'src'},
-    install_requires=['torch','gdown'],
+    install_requires=['torch', 'gdown'],
 )

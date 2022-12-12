@@ -1,9 +1,9 @@
 import os.path
 
-from . import SentimentAnalysis as SentimentAnalysisModel
+from .models import SentimentAnalysis as SentimentAnalysisModel
 from . import utils
 import torch
-from . import data_preprocessing
+from .data_preprocessing import remove_punctuations
 import gdown
 
 _model = None
@@ -47,7 +47,7 @@ def predict(review: str):
     global _current_device
     if _model is None:
         raise Exception("please load the model first")
-    review = data_preprocessing.remove_punctuations(review)
+    review = remove_punctuations(review)
 
     review_words = review.split()
     int_review = []
