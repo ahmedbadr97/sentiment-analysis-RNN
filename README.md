@@ -13,7 +13,7 @@
 # usage
 ## direct usage
 - use it for inferences only 
-- `pip install pip install git+https://github.com/ahmedbadr97/sentiment-analysis-RNN`
+- `pip install git+https://github.com/ahmedbadr97/sentiment-analysis-RNN`
 ```python
 import sentiment_analysis
 # this will load the model and download model weights for the first time only

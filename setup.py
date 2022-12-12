@@ -16,6 +16,6 @@ setuptools.setup(
     license='MIT',
     packages=['sentiment-analysis'],
     package_dir={
-        'sentiment-analysis': 'src'},
+        'sentiment_analysis': 'src'},
     install_requires=['torch','gdown'],
 )
