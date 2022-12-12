@@ -3,7 +3,6 @@ import os.path
 from .models import SentimentAnalysis as SentimentAnalysisModel
 from . import utils
 import torch
-from .data_preprocessing import remove_punctuations
 import gdown
 
 _model = None
@@ -47,7 +46,7 @@ def predict(review: str):
     global _current_device
     if _model is None:
         raise Exception("please load the model first")
-    review = remove_punctuations(review)
+    review = utils.remove_punctuations(review)
 
     review_words = review.split()
     int_review = []
@@ -61,3 +60,5 @@ def predict(review: str):
     out, hidden = _model(review_tensor)
 
     return out.item()
+
+

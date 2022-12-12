@@ -264,7 +264,7 @@ test size 8000
 
 
 ## Model training
-- train method exists in [model_training.py](./src/model_training.py)
+- train method exists in [model_training.py](src/model_training/train.py)
 - the model first load the embedding layer from the skip-gram model
 - then the training starts with freezing the embedding layer and leaving the LSTM and fc to train for about 20 epochs to get the right weights without updating the embedding layer with learning rate 0.001
 - then the model trained for another 20 epochs after un-freezing the embedding to make it tailored for the sentiment analysis with small learning rate 0.0001

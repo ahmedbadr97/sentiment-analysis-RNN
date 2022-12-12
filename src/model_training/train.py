@@ -1,10 +1,10 @@
 import torch.nn
 from torch import optim, nn
 
-from .models import SkipGram
+from src.sentiment_analysis.models import SkipGram
 from .dataloader import Word2VecDataset, SentimentAnalysisDataset
 from .utils import cosine_similarity
-from .models import NegativeSamplingLoss, SentimentAnalysis
+from src.sentiment_analysis.models import NegativeSamplingLoss, SentimentAnalysis
 import traintracker
 from traintracker import TrackerMod
 
