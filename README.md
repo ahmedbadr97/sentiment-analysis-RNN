@@ -1,7 +1,7 @@
 # Sentiment analysis using RNN
 
 - sentiment analysis model , for movie reviews using LSTM
-- first layer for the model is the embedding layer which carries the vector representation of the words
+- first layer of the model is the embedding layer which carries the vector representation of the words
 - the embedding layer is trained separately using skip-gram technique after data preprocessing in
   the [skip gram notebook](./notebooks/Skip_Gram.ipynb)
 - then the full model (embedding layer + LSTM ) trained in
@@ -55,7 +55,7 @@ no of words =9253570
 
 ### calculate word importance
 
-- calculate word importance `log(word in positive / word count in negative` to but the word importance in account while
+- calculate word importance `log(word in positive / word count in negative` to put the word importance in account while
   removing words
 
 ```
